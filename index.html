@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Rain</title>
+    <style>
+        body {
+            background-color: #1a1a1a; /* Dark blue background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        #button-container {
+            position: absolute;
+            z-index: 1;
+        }
+        .button {
+            padding: 15px 30px;
+            margin: 5px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #pencet {
+            background-color: red; /* Red button */
+        }
+        #stop {
+            background-color: orange; /* Orange button */
+            display: none;
+        }
+        #lanjut {
+            background-color: green; /* Green button */
+            display: none;
+        }
+        .emoji {
+            position: absolute;
+            font-size: 2em;
+            opacity: 1;
+            animation: fall 5s linear infinite, fade 5s linear infinite;
+        }
+        @keyframes fall {
+            0% { top: -10%; }
+            100% { top: 110%; }
+        }
+        @keyframes fade {
+            0%, 80% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div id="button-container">
+        <button id="pencet" class="button">PENCET</button>
+        <button id="stop" class="button">STOP</button>
+        <button id="lanjut" class="button">LANJUT</button>
+    </div>
+
+    <script>
+        const pencetButton = document.getElementById('pencet');
+        const stopButton = document.getElementById('stop');
+        const lanjutButton = document.getElementById('lanjut');
+        const emojis = ['❤', '🌸'];
+        let interval;
+
+        pencetButton.addEventListener('click', () => {
+            interval = setInterval(createEmoji, 200);
+            pencetButton.style.display = 'none';
+            stopButton.style.display = 'inline-block';
+        });
+
+        stopButton.addEventListener('click', () => {
+            clearInterval(interval);
+            stopButton.style.display = 'none';
+            lanjutButton.style.display = 'inline-block';
+        });
+
+        lanjutButton.addEventListener('click', () => {
+            interval = setInterval(createEmoji, 200);
+            lanjutButton.style.display = 'none';
+            stopButton.style.display = 'inline-block';
+        });
+
+        function createEmoji() {
+            const emoji = document.createElement('div');
+            emoji.classList.add('emoji');
+            emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+            emoji.style.left = Math.random() * 100 + 'vw';
+            emoji.style.color = getRandomColor();
+            document.body.appendChild(emoji);
+            
+            setTimeout(() => {
+                emoji.remove();
+            }, 5000);
+        }
+
+        function getRandomColor() {
+            return `hsl(${Math.random() * 360}, 100%, 50%)`;
+        }
+    </script>
+</body>
+</html>
